@@ -13,23 +13,23 @@ import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import NFTCard from "../components/NFTCard";
 import {
-  nftDropContractAddress,
-  stakingContractAddress,
-  tokenContractAddress,
+  0x45Ca84E29d82495687bCDd8fE8Cb748251bD93F2,
+  0x1a0E661f3b92B92DdF2fc0193b10f38Ac69380f7,
+  0xf941fed95a8e0167fb4c14ce8f3343afcfb1fece,
 } from "../consts/contractAddresses";
 import styles from "../styles/Home.module.css";
 
 const Stake: NextPage = () => {
   const address = useAddress();
   const { contract: nftDropContract } = useContract(
-    nftDropContractAddress,
+    0x45Ca84E29d82495687bCDd8fE8Cb748251bD93F2,
     "nft-drop"
   );
   const { contract: tokenContract } = useContract(
-    tokenContractAddress,
+    0xf941fed95a8e0167fb4c14ce8f3343afcfb1fece,
     "token"
   );
-  const { contract, isLoading } = useContract(stakingContractAddress);
+  const { contract, isLoading } = useContract(0x1a0E661f3b92B92DdF2fc0193b10f38Ac69380f7);
   const { data: ownedNfts } = useOwnedNFTs(nftDropContract, address);
   const { data: tokenBalance } = useTokenBalance(tokenContract, address);
   const [claimableRewards, setClaimableRewards] = useState<BigNumber>();
@@ -53,10 +53,10 @@ const Stake: NextPage = () => {
 
     const isApproved = await nftDropContract?.isApproved(
       address,
-      stakingContractAddress
+      0x1a0E661f3b92B92DdF2fc0193b10f38Ac69380f7
     );
     if (!isApproved) {
-      await nftDropContract?.setApprovalForAll(stakingContractAddress, true);
+      await nftDropContract?.setApprovalForAll(0x1a0E661f3b92B92DdF2fc0193b10f38Ac69380f7, true);
     }
     await contract?.call("stake", [[id]]);
   }
@@ -97,7 +97,7 @@ const Stake: NextPage = () => {
 
           <Web3Button
             action={(contract) => contract.call("claimRewards")}
-            contractAddress={stakingContractAddress}
+            contractAddress={0x1a0E661f3b92B92DdF2fc0193b10f38Ac69380f7}
           >
             Claim Rewards
           </Web3Button>
@@ -125,7 +125,7 @@ const Stake: NextPage = () => {
                 />
                 <h3>{nft.metadata.name}</h3>
                 <Web3Button
-                  contractAddress={stakingContractAddress}
+                  contractAddress={0x1a0E661f3b92B92DdF2fc0193b10f38Ac69380f7}
                   action={() => stakeNft(nft.metadata.id)}
                 >
                   Stake
